@@ -23,6 +23,9 @@ ROOT_SIM	:= /Developer/Platforms/iPhoneSimulator.platform/Developer
 
 # Auto-detect the latest SDK
 ifeq ($(SDK_VER),)
+SDK_VER   := $(shell [ -d $(ROOT_ARM)/SDKs/iPhoneOS5.1.sdk ] && echo "5.1")
+endif
+ifeq ($(SDK_VER),)
 SDK_VER   := $(shell [ -d $(ROOT_ARM)/SDKs/iPhoneOS4.3.sdk ] && echo "4.3")
 endif
 ifeq ($(SDK_VER),)
