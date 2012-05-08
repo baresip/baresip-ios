@@ -9,9 +9,11 @@
 # path to external source code
 #
 
-LIBRE_PATH	:= ../re
-LIBREM_PATH	:= ../rem
-BARESIP_PATH	:= ../baresip
+SOURCE_PATH	:= /Users/alfredh/src
+
+LIBRE_PATH	:= $(SOURCE_PATH)/re-0.4.1
+LIBREM_PATH	:= $(SOURCE_PATH)/rem-0.4.1
+BARESIP_PATH	:= $(SOURCE_PATH)/baresip-0.4.1
 
 
 #
@@ -95,7 +97,8 @@ EXTRA_I386      := \
 		-Wno-aggregate-return \
 		-arch i386 \
 		-isysroot $(SDK_SIM) \
-		-I$(CONTRIB_I386)/include' \
+		-I$(CONTRIB_I386)/include \
+		-I$(CONTRIB_I386)/include/rem' \
 	OBJCFLAGS='-fobjc-abi-version=2 -fobjc-legacy-dispatch' \
 	EXTRA_LFLAGS='-arch i386 -L$(CONTRIB_FAT)/lib \
 		-isysroot $(SDK_SIM)'
@@ -103,6 +106,7 @@ EXTRA_I386      := \
 EXTRA_ARMV6       := \
 	EXTRA_CFLAGS='-arch armv6 \
 		-I$(CONTRIB_ARMV6)/include \
+		-I$(CONTRIB_ARMV6)/include/rem \
 		-Wno-cast-align -Wno-shorten-64-to-32 \
 		-Wno-aggregate-return \
 		-isysroot $(SDK_ARM) -DHAVE_ARMV6' \
@@ -114,6 +118,7 @@ EXTRA_ARMV6       := \
 EXTRA_ARMV7       := \
 	EXTRA_CFLAGS='-arch armv7 \
 		-I$(CONTRIB_ARMV7)/include \
+		-I$(CONTRIB_ARMV7)/include/rem \
 		-Wno-cast-align -Wno-shorten-64-to-32 \
 		-Wno-aggregate-return \
 		-isysroot $(SDK_ARM) -DHAVE_NEON' \
