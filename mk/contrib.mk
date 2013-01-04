@@ -11,9 +11,9 @@
 
 SOURCE_PATH	:= /Users/alfredh/src
 
-LIBRE_PATH	:= $(SOURCE_PATH)/re-0.4.1
-LIBREM_PATH	:= $(SOURCE_PATH)/rem-0.4.1
-BARESIP_PATH	:= $(SOURCE_PATH)/baresip-0.4.1
+LIBRE_PATH	:= $(SOURCE_PATH)/re-0.4.2
+LIBREM_PATH	:= $(SOURCE_PATH)/rem-0.4.2
+BARESIP_PATH	:= $(SOURCE_PATH)/baresip-0.4.3
 
 
 #
@@ -237,15 +237,15 @@ BARESIP_BUILD_FLAGS := \
 
 BARESIP_BUILD_FLAGS_I386 := \
 	$(BARESIP_BUILD_FLAGS) \
-	EXTRA_MODULES='g711 audiounit'
+	EXTRA_MODULES='g711 audiounit avcapture opengles'
 
 BARESIP_BUILD_FLAGS_ARMV6 := \
 	$(BARESIP_BUILD_FLAGS) \
-	EXTRA_MODULES='g711 audiounit'
+	EXTRA_MODULES='g711 audiounit avcapture opengles'
 
 BARESIP_BUILD_FLAGS_ARMV7 := \
 	$(BARESIP_BUILD_FLAGS) \
-	EXTRA_MODULES='g711 audiounit'
+	EXTRA_MODULES='g711 audiounit avcapture opengles'
 
 
 baresip: librem libre
