@@ -11,9 +11,9 @@
 
 SOURCE_PATH	:= $(shell pwd)
 
-LIBRE_PATH	:= $(SOURCE_PATH)/re-0.4.7
-LIBREM_PATH	:= $(SOURCE_PATH)/rem-0.4.6
-BARESIP_PATH	:= $(SOURCE_PATH)/baresip-0.4.10
+LIBRE_PATH	:= $(SOURCE_PATH)/re
+LIBREM_PATH	:= $(SOURCE_PATH)/rem
+BARESIP_PATH	:= $(SOURCE_PATH)/baresip
 
 
 #
