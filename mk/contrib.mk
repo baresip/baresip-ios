@@ -4,6 +4,7 @@
 # Copyright (C) 2010 - 2012 Creytiv.com
 #
 
+DEPLOYMENT_TARGET_VERSION=5.1
 
 #
 # path to external source code
@@ -67,8 +68,7 @@ EXTRA_LFLAGS_I386  := -arch i386 -L$(CONTRIB_I386)/lib $(EXTRA_LFLAGS_SIM)
 
 EXTRA_I386      := \
 	EXTRA_CFLAGS='-D__DARWIN_ONLY_UNIX_CONFORMANCE \
-		-D__IPHONE_OS_VERSION_MIN_REQUIRED=30000 \
-		-miphoneos-version-min=5.1 \
+		-mios-simulator-version-min=$(DEPLOYMENT_TARGET_VERSION) \
 		-Wno-cast-align -Wno-shorten-64-to-32 \
 		-Wno-aggregate-return \
 		-arch i386 \
@@ -76,7 +76,8 @@ EXTRA_I386      := \
 		-I$(CONTRIB_I386)/include \
 		-I$(CONTRIB_I386)/include/rem' \
 	OBJCFLAGS='-fobjc-abi-version=2 -fobjc-legacy-dispatch' \
-	EXTRA_LFLAGS='-miphoneos-version-min=5.1 -arch i386 -L$(CONTRIB_FAT)/lib \
+	EXTRA_LFLAGS='-mios-simulator-version-min=$(DEPLOYMENT_TARGET_VERSION) -arch i386 -L$(CONTRIB_FAT)/lib \
+		-isysroot $(SDK_SIM)'
 		-isysroot $(SDK_SIM)'
 
 EXTRA_AARCH64       := \
@@ -85,6 +86,7 @@ EXTRA_AARCH64       := \
 		-I$(CONTRIB_AARCH64)/include/rem \
 		-Wno-cast-align -Wno-shorten-64-to-32 \
 		-Wno-aggregate-return \
+		-miphoneos-version-min=$(DEPLOYMENT_TARGET_VERSION) \
 		-isysroot $(SDK_ARM) -DHAVE_AARCH64' \
 	EXTRA_LFLAGS='-arch arm64 -mcpu=generic -marm \
 		-L$(CONTRIB_FAT)/lib -isysroot $(SDK_ARM)' \
@@ -97,6 +99,7 @@ EXTRA_ARMV7       := \
 		-I$(CONTRIB_ARMV7)/include/rem \
 		-Wno-cast-align -Wno-shorten-64-to-32 \
 		-Wno-aggregate-return \
+		-miphoneos-version-min=$(DEPLOYMENT_TARGET_VERSION) \
 		-isysroot $(SDK_ARM) -DHAVE_NEON' \
 	EXTRA_LFLAGS='-arch armv7 -mcpu=cortex-a8 -mfpu=neon -marm \
 		-L$(CONTRIB_FAT)/lib -isysroot $(SDK_ARM)' \
