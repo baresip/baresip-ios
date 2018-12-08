@@ -7,9 +7,9 @@
 
 BUILD_DIR	:= build
 CONTRIB_DIR	:= contrib
-BARESIP_SRC	:= baresip-0.4.20.tar.gz
-LIBREM_SRC	:= rem-latest.tar.gz
-LIBRE_SRC	:= re-latest.tar.gz
+BARESIP_SRC	:= baresip-0.6.0.tar.gz
+LIBREM_SRC	:= rem-0.6.0.tar.gz
+LIBRE_SRC	:= re-0.6.0.tar.gz
 
 
 include mk/contrib.mk
