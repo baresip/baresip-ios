@@ -352,3 +352,11 @@ baresip: librem libre
 		-arch armv7 $(CONTRIB_ARMV7)/lib/libbaresip.a \
 		-arch armv7s $(CONTRIB_ARMV7S)/lib/libbaresip.a \
 		-create -output $(CONTRIB_FAT)/lib/libbaresip.a
+
+
+info:
+	@echo "SDK_VER:    $(SDK_VER)"
+	@echo "SDK_ARM:    $(SDK_ARM)"
+	@echo "SDK_SIM:    $(SDK_SIM)"
+	@echo "CC_ARM:     $(CC_ARM)"
+	@echo "CC_SIM:     $(CC_SIM)"
