@@ -4,7 +4,7 @@
 # Copyright (C) 2010 - 2012 Creytiv.com
 #
 
-DEPLOYMENT_TARGET_VERSION=5.1
+DEPLOYMENT_TARGET_VERSION=6.0
 
 #
 # path to external source code
