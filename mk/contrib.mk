@@ -57,10 +57,10 @@ SIMROOT_ALT	:= $(CONTRIB_FAT)
 
 EXTRA_CFLAGS       := -DIPHONE -pipe -no-cpp-precomp -isysroot $(SDK_ARM)
 EXTRA_CFLAGS_SIM   := -DIPHONE -pipe -no-cpp-precomp -isysroot $(SDK_SIM)
-EXTRA_CFLAGS_AARCH64 := -arch aarch64 -I$(CONTRIB_AARCH64)/include $(EXTRA_CFLAGS)
-EXTRA_CFLAGS_ARMV7 := -arch armv7 -I$(CONTRIB_ARMV7)/include $(EXTRA_CFLAGS)
-EXTRA_CFLAGS_ARMV7S := -arch armv7s -I$(CONTRIB_ARMV7S)/include $(EXTRA_CFLAGS)
-EXTRA_CFLAGS_X86_64  := -arch x86_64 -I$(CONTRIB_X86_64)/include $(EXTRA_CFLAGS_SIM)
+EXTRA_CFLAGS_AARCH64 := -flto -arch aarch64 -I$(CONTRIB_AARCH64)/include $(EXTRA_CFLAGS)
+EXTRA_CFLAGS_ARMV7 := -flto -arch armv7 -I$(CONTRIB_ARMV7)/include $(EXTRA_CFLAGS)
+EXTRA_CFLAGS_ARMV7S := -flto -arch armv7s -I$(CONTRIB_ARMV7S)/include $(EXTRA_CFLAGS)
+EXTRA_CFLAGS_X86_64  := -flto -arch x86_64 -I$(CONTRIB_X86_64)/include $(EXTRA_CFLAGS_SIM)
 
 EXTRA_LFLAGS       := -L$(CONTRIB_FAT)/lib -isysroot $(SDK_ARM)
 EXTRA_LFLAGS_SIM   := -L$(CONTRIB_FAT)/lib -isysroot $(SDK_SIM)
@@ -69,6 +69,8 @@ EXTRA_LFLAGS_ARMV7 := -arch armv7 -L$(CONTRIB_ARMV7)/lib $(EXTRA_LFLAGS)
 EXTRA_LFLAGS_ARMV7S := -arch armv7s -L$(CONTRIB_ARMV7S)/lib $(EXTRA_LFLAGS)
 EXTRA_LFLAGS_X86_64  := -arch x86_64 -L$(CONTRIB_X86_64)/lib $(EXTRA_LFLAGS_SIM)
 
+CC_ARM := ${CC_ARM} -fembed-bitcode
+CC_SIM := ${CC_SIM} -fembed-bitcode
 
 EXTRA_X86_64      := \
 	EXTRA_CFLAGS='-D__DARWIN_ONLY_UNIX_CONFORMANCE \
