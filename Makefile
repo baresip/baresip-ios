@@ -7,10 +7,6 @@
 
 BUILD_DIR	:= build
 CONTRIB_DIR	:= contrib
-BARESIP_SRC	:= baresip-0.6.0.tar.gz
-LIBREM_SRC	:= rem-0.6.0.tar.gz
-LIBRE_SRC	:= re-0.6.0.tar.gz
-
 
 include mk/contrib.mk
 
@@ -19,16 +15,14 @@ all:	contrib
 
 
 clean:
-	@rm -rf $(BUILD_DIR) $(CONTRIB_DIR)
+	@rm -rf $(BUILD_DIR) $(CONTRIB_DIR) \
+	@rm -rf baresip rem re
 
 
-fetch:
-	@curl -LO http://www.creytiv.com/pub/$(BARESIP_SRC)
-	@curl -LO http://www.creytiv.com/pub/$(LIBREM_SRC)
-	@curl -LO http://www.creytiv.com/pub/$(LIBRE_SRC)
-
-
-unpack:
-	@mkdir -p baresip && tar -xzf $(BARESIP_SRC) -C baresip --strip-components=1
-	@mkdir -p rem && tar -xzf $(LIBREM_SRC) -C rem --strip-components=1
-	@mkdir -p re && tar -xzf $(LIBRE_SRC) -C re --strip-components=1
+.PHONY: download
+download:
+	rm -fr baresip re rem
+	git clone https://github.com/baresip/baresip.git
+	git clone https://github.com/creytiv/rem.git
+	git clone https://github.com/baresip/re.git
+	patch -d rem -p1 < rem-patch-arm64
