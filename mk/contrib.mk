@@ -250,19 +250,19 @@ BARESIP_BUILD_FLAGS := \
 
 BARESIP_BUILD_FLAGS_X86_64 := \
 	$(BARESIP_BUILD_FLAGS) \
-	EXTRA_MODULES='g711 audiounit avcapture opengles'
+	EXTRA_MODULES='g711 audiounit avcapture'
 
 BARESIP_BUILD_FLAGS_AARCH64 := \
 	$(BARESIP_BUILD_FLAGS) \
-	EXTRA_MODULES='g711 audiounit avcapture opengles'
+	EXTRA_MODULES='g711 audiounit avcapture'
 
 BARESIP_BUILD_FLAGS_ARMV7 := \
 	$(BARESIP_BUILD_FLAGS) \
-	EXTRA_MODULES='g711 audiounit avcapture opengles'
+	EXTRA_MODULES='g711 audiounit avcapture'
 
 BARESIP_BUILD_FLAGS_ARMV7S := \
 	$(BARESIP_BUILD_FLAGS) \
-	EXTRA_MODULES='g711 audiounit avcapture opengles'
+	EXTRA_MODULES='g711 audiounit avcapture'
 
 
 baresip: librem libre
