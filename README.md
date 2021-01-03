@@ -8,7 +8,7 @@ This project shows how to cross compile baresip for iOS.
 baresip is a modular SIP user-agent that can be downloaded
 from:
 
-    http://www.creytiv.com/baresip.html
+    https://github.com/baresip/baresip
 
 
 
