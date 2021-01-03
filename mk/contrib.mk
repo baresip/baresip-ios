@@ -36,6 +36,9 @@ SDK_SIM		:= $(shell xcrun -find -sdk iphonesimulator --show-sdk-path)
 CC_ARM		:= $(shell xcrun -find -sdk iphoneos gcc)
 CC_SIM		:= $(shell xcrun -find -sdk iphonesimulator gcc)
 
+CC_ARM_FLAGS := -fembed-bitcode
+CC_SIM_FLAGS := -fembed-bitcode
+
 CONTRIB_DIR	:= $(PWD)/contrib
 CONTRIB_AARCH64	:= $(CONTRIB_DIR)/aarch64
 CONTRIB_ARMV7	:= $(CONTRIB_DIR)/armv7
@@ -147,7 +150,7 @@ LIBRE_BUILD_FLAGS := \
 
 libre: $(CONTRIB_FAT)/lib
 	@rm -f $(LIBRE_PATH)/libre.*
-	@make -sC $(LIBRE_PATH) CC='$(CC_ARM)' \
+	@make -sC $(LIBRE_PATH) CC='$(CC_ARM) $(CC_ARM_FLAGS)' \
 		BUILD=$(BUILD_AARCH64)/libre \
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
 		$(LIBRE_BUILD_FLAGS) $(EXTRA_AARCH64) \
@@ -155,7 +158,7 @@ libre: $(CONTRIB_FAT)/lib
 		all install
 
 	@rm -f $(LIBRE_PATH)/libre.*
-	@make -sC $(LIBRE_PATH) CC='$(CC_ARM)' \
+	@make -sC $(LIBRE_PATH) CC='$(CC_ARM) $(CC_ARM_FLAGS)' \
 		BUILD=$(BUILD_ARMV7S)/libre \
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
 		$(LIBRE_BUILD_FLAGS) $(EXTRA_ARMV7S) \
@@ -163,7 +166,7 @@ libre: $(CONTRIB_FAT)/lib
 		all install
 
 	@rm -f $(LIBRE_PATH)/libre.*
-	@make -sC $(LIBRE_PATH) CC='$(CC_ARM)' \
+	@make -sC $(LIBRE_PATH) CC='$(CC_ARM) $(CC_ARM_FLAGS)' \
 		BUILD=$(BUILD_ARMV7)/libre \
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
 		$(LIBRE_BUILD_FLAGS) $(EXTRA_ARMV7) \
@@ -171,7 +174,7 @@ libre: $(CONTRIB_FAT)/lib
 		all install
 
 	@rm -f $(LIBRE_PATH)/libre.*
-	@make -sC $(LIBRE_PATH) CC='$(CC_SIM)' \
+	@make -sC $(LIBRE_PATH) CC='$(CC_SIM) $(CC_SIM_FLAGS)' \
 		BUILD=$(BUILD_X86_64)/libre \
 		SYSROOT=$(SIMROOT) SYSROOT_ALT=$(SIMROOT_ALT) \
 		$(LIBRE_BUILD_FLAGS) $(EXTRA_X86_64) \
@@ -197,7 +200,7 @@ LIBREM_BUILD_FLAGS := \
 
 librem: libre
 	@rm -f $(LIBREM_PATH)/librem.*
-	@make -sC $(LIBREM_PATH) CC='$(CC_ARM)' \
+	@make -sC $(LIBREM_PATH) CC='$(CC_ARM) $(CC_ARM_FLAGS)' \
 		BUILD=$(BUILD_AARCH64)/librem \
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
 		$(LIBREM_BUILD_FLAGS) $(EXTRA_AARCH64) \
@@ -205,7 +208,7 @@ librem: libre
 		all install
 
 	@rm -f $(LIBREM_PATH)/librem.*
-	@make -sC $(LIBREM_PATH) CC='$(CC_ARM)' \
+	@make -sC $(LIBREM_PATH) CC='$(CC_ARM) $(CC_ARM_FLAGS)' \
 		BUILD=$(BUILD_ARMV7)/librem \
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
 		$(LIBREM_BUILD_FLAGS) $(EXTRA_ARMV7) \
@@ -213,7 +216,7 @@ librem: libre
 		all install
 
 	@rm -f $(LIBREM_PATH)/librem.*
-	@make -sC $(LIBREM_PATH) CC='$(CC_ARM)' \
+	@make -sC $(LIBREM_PATH) CC='$(CC_ARM) $(CC_ARM_FLAGS)' \
 		BUILD=$(BUILD_ARMV7S)/librem \
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
 		$(LIBREM_BUILD_FLAGS) $(EXTRA_ARMV7S) \
@@ -221,7 +224,7 @@ librem: libre
 		all install
 
 	@rm -f $(LIBREM_PATH)/librem.*
-	@make -sC $(LIBREM_PATH) CC='$(CC_SIM)' \
+	@make -sC $(LIBREM_PATH) CC='$(CC_SIM) $(CC_SIM_FLAGS)' \
 		BUILD=$(BUILD_X86_64)/librem \
 		SYSROOT=$(SIMROOT) SYSROOT_ALT=$(SIMROOT_ALT) \
 		$(LIBREM_BUILD_FLAGS) $(EXTRA_X86_64) \
@@ -267,7 +270,7 @@ BARESIP_BUILD_FLAGS_ARMV7S := \
 
 baresip: librem libre
 	@rm -f $(BARESIP_PATH)/src/static.c ../baresip/libbaresip.*
-	@make -sC $(BARESIP_PATH) CC='$(CC_ARM)' \
+	@make -sC $(BARESIP_PATH) CC='$(CC_ARM) $(CC_ARM_FLAGS)' \
 		BUILD=$(BUILD_AARCH64)/baresip \
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
 		$(BARESIP_BUILD_FLAGS_AARCH64) $(EXTRA_AARCH64) \
@@ -275,7 +278,7 @@ baresip: librem libre
 		install-static
 
 	@rm -f $(BARESIP_PATH)/src/static.c ../baresip/libbaresip.*
-	@make -sC $(BARESIP_PATH) CC='$(CC_ARM)' \
+	@make -sC $(BARESIP_PATH) CC='$(CC_ARM) $(CC_ARM_FLAGS)' \
 		BUILD=$(BUILD_ARMV7)/baresip \
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
 		$(BARESIP_BUILD_FLAGS_ARMV7) $(EXTRA_ARMV7) \
@@ -283,7 +286,7 @@ baresip: librem libre
 		install-static
 
 	@rm -f $(BARESIP_PATH)/src/static.c ../baresip/libbaresip.*
-	@make -sC $(BARESIP_PATH) CC='$(CC_ARM)' \
+	@make -sC $(BARESIP_PATH) CC='$(CC_ARM) $(CC_ARM_FLAGS)' \
 		BUILD=$(BUILD_ARMV7S)/baresip \
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
 		$(BARESIP_BUILD_FLAGS_ARMV7S) $(EXTRA_ARMV7S) \
@@ -291,7 +294,7 @@ baresip: librem libre
 		install-static
 
 	@rm -f $(BARESIP_PATH)/src/static.c ../baresip/libbaresip.*
-	@make -sC $(BARESIP_PATH) CC='$(CC_SIM)' \
+	@make -sC $(BARESIP_PATH) CC='$(CC_SIM) $(CC_SIM_FLAGS)' \
 		BUILD=$(BUILD_X86_64)/baresip \
 		SYSROOT=$(SIMROOT) SYSROOT_ALT=$(SIMROOT_ALT) \
 		$(BARESIP_BUILD_FLAGS_X86_64) $(EXTRA_X86_64) \
