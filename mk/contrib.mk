@@ -12,9 +12,9 @@ DEPLOYMENT_TARGET_VERSION=6.0
 
 SOURCE_PATH	:= $(shell pwd)
 
-LIBRE_PATH := $(SOURCE_PATH)/re
-LIBREM_PATH := $(SOURCE_PATH)/rem
-BARESIP_PATH := $(SOURCE_PATH)/baresip
+LIBRE_PATH	:= $(SOURCE_PATH)/re
+LIBREM_PATH	:= $(SOURCE_PATH)/rem
+BARESIP_PATH	:= $(SOURCE_PATH)/baresip
 
 
 #
@@ -23,57 +23,57 @@ BARESIP_PATH := $(SOURCE_PATH)/baresip
 
 # Auto-detect the latest SDK
 ifeq ($(SDK_VER),)
-SDK_VER := $(shell xcrun -find -sdk iphoneos --show-sdk-version)
+SDK_VER   := $(shell xcrun -find -sdk iphoneos --show-sdk-version)
 endif
 ifeq ($(SDK_VER),)
 $(warning no iPhone SDK detected)
 endif
 
-SDK_MAJOR := $(shell echo $(SDK_VER) | cut -d'.' -f 1)
-SDK_MINOR := $(shell echo $(SDK_VER) | cut -d'.' -f 2)
-SDK_ARM := $(shell xcrun -find -sdk iphoneos --show-sdk-path)
-SDK_SIM := $(shell xcrun -find -sdk iphonesimulator --show-sdk-path)
-CC_ARM := $(shell xcrun -find -sdk iphoneos gcc)
-CC_SIM := $(shell xcrun -find -sdk iphonesimulator gcc)
+SDK_MAJOR	:= $(shell echo $(SDK_VER) | cut -d'.' -f 1)
+SDK_MINOR	:= $(shell echo $(SDK_VER) | cut -d'.' -f 2)
+SDK_ARM		:= $(shell xcrun -find -sdk iphoneos --show-sdk-path)
+SDK_SIM		:= $(shell xcrun -find -sdk iphonesimulator --show-sdk-path)
+CC_ARM		:= $(shell xcrun -find -sdk iphoneos gcc)
+CC_SIM		:= $(shell xcrun -find -sdk iphonesimulator gcc)
 
 CC_ARM_FLAGS := -fembed-bitcode
 CC_SIM_FLAGS := -fembed-bitcode
 
-CONTRIB_DIR := $(PWD)/contrib
-CONTRIB_AARCH64 := $(CONTRIB_DIR)/aarch64
-CONTRIB_ARMV7 := $(CONTRIB_DIR)/armv7
-CONTRIB_ARMV7S := $(CONTRIB_DIR)/armv7s
-CONTRIB_X86_64 := $(CONTRIB_DIR)/x86_64
-CONTRIB_FAT := $(CONTRIB_DIR)/fat
+CONTRIB_DIR	:= $(PWD)/contrib
+CONTRIB_AARCH64	:= $(CONTRIB_DIR)/aarch64
+CONTRIB_ARMV7	:= $(CONTRIB_DIR)/armv7
+CONTRIB_ARMV7S	:= $(CONTRIB_DIR)/armv7s
+CONTRIB_X86_64	:= $(CONTRIB_DIR)/x86_64
+CONTRIB_FAT	:= $(CONTRIB_DIR)/fat
 
-BUILD_DIR := $(PWD)/build
-BUILD_AARCH64 := $(BUILD_DIR)/aarch64
-BUILD_ARMV7 := $(BUILD_DIR)/armv7
-BUILD_ARMV7S := $(BUILD_DIR)/armv7s
-BUILD_X86_64 := $(BUILD_DIR)/x86_64
-BUILD_FAT := $(BUILD_DIR)/fat
+BUILD_DIR	:= $(PWD)/build
+BUILD_AARCH64	:= $(BUILD_DIR)/aarch64
+BUILD_ARMV7	:= $(BUILD_DIR)/armv7
+BUILD_ARMV7S	:= $(BUILD_DIR)/armv7s
+BUILD_X86_64	:= $(BUILD_DIR)/x86_64
+BUILD_FAT	:= $(BUILD_DIR)/fat
 
-ARMROOT := $(SDK_ARM)/usr
-ARMROOT_ALT := $(CONTRIB_FAT)
-SIMROOT := $(SDK_SIM)/usr
-SIMROOT_ALT := $(CONTRIB_FAT)
+ARMROOT		:= $(SDK_ARM)/usr
+ARMROOT_ALT	:= $(CONTRIB_FAT)
+SIMROOT		:= $(SDK_SIM)/usr
+SIMROOT_ALT	:= $(CONTRIB_FAT)
 
-
-EXTRA_CFLAGS := -DIPHONE -pipe -no-cpp-precomp -isysroot $(SDK_ARM)
-EXTRA_CFLAGS_SIM := -DIPHONE -pipe -no-cpp-precomp -isysroot $(SDK_SIM)
+EXTRA_CFLAGS       := -DIPHONE -pipe -no-cpp-precomp -isysroot $(SDK_ARM)
+EXTRA_CFLAGS_SIM   := -DIPHONE -pipe -no-cpp-precomp -isysroot $(SDK_SIM)
 EXTRA_CFLAGS_AARCH64 := -arch aarch64 -I$(CONTRIB_AARCH64)/include $(EXTRA_CFLAGS)
 EXTRA_CFLAGS_ARMV7 := -arch armv7 -I$(CONTRIB_ARMV7)/include $(EXTRA_CFLAGS)
 EXTRA_CFLAGS_ARMV7S := -arch armv7s -I$(CONTRIB_ARMV7S)/include $(EXTRA_CFLAGS)
-EXTRA_CFLAGS_X86_64 := -arch x86_64 -I$(CONTRIB_X86_64)/include $(EXTRA_CFLAGS_SIM)
+EXTRA_CFLAGS_X86_64  := -arch x86_64 -I$(CONTRIB_X86_64)/include $(EXTRA_CFLAGS_SIM)
 
-EXTRA_LFLAGS := -L$(CONTRIB_FAT)/lib -isysroot $(SDK_ARM)
-EXTRA_LFLAGS_SIM := -L$(CONTRIB_FAT)/lib -isysroot $(SDK_SIM)
+EXTRA_LFLAGS       := -L$(CONTRIB_FAT)/lib -isysroot $(SDK_ARM)
+EXTRA_LFLAGS_SIM   := -L$(CONTRIB_FAT)/lib -isysroot $(SDK_SIM)
 EXTRA_LFLAGS_AARCH64 := -arch aarch64 -L$(CONTRIB_AARCH64)/lib $(EXTRA_LFLAGS)
 EXTRA_LFLAGS_ARMV7 := -arch armv7 -L$(CONTRIB_ARMV7)/lib $(EXTRA_LFLAGS)
 EXTRA_LFLAGS_ARMV7S := -arch armv7s -L$(CONTRIB_ARMV7S)/lib $(EXTRA_LFLAGS)
-EXTRA_LFLAGS_X86_64 := -arch x86_64 -L$(CONTRIB_X86_64)/lib $(EXTRA_LFLAGS_SIM)
+EXTRA_LFLAGS_X86_64  := -arch x86_64 -L$(CONTRIB_X86_64)/lib $(EXTRA_LFLAGS_SIM)
 
-EXTRA_X86_64 := \
+
+EXTRA_X86_64      := \
 	EXTRA_CFLAGS='-D__DARWIN_ONLY_UNIX_CONFORMANCE \
 		-mios-simulator-version-min=$(DEPLOYMENT_TARGET_VERSION) \
 		-Wno-cast-align -Wno-shorten-64-to-32 \
@@ -86,7 +86,7 @@ EXTRA_X86_64 := \
 	EXTRA_LFLAGS='-mios-simulator-version-min=$(DEPLOYMENT_TARGET_VERSION) -arch x86_64 -L$(CONTRIB_FAT)/lib \
 		-isysroot $(SDK_SIM)'
 
-EXTRA_AARCH64 := \
+EXTRA_AARCH64       := \
 	EXTRA_CFLAGS='-arch arm64 \
 		-I$(CONTRIB_AARCH64)/include \
 		-I$(CONTRIB_AARCH64)/include/rem \
@@ -99,7 +99,7 @@ EXTRA_AARCH64 := \
 	OS=darwin ARCH=arm64 CROSS_COMPILE=$(ARM_MACHINE) \
 	HAVE_ARM64=1
 
-EXTRA_ARMV7 := \
+EXTRA_ARMV7       := \
 	EXTRA_CFLAGS='-arch armv7 \
 		-I$(CONTRIB_ARMV7)/include \
 		-I$(CONTRIB_ARMV7)/include/rem \
@@ -112,7 +112,7 @@ EXTRA_ARMV7 := \
 	OS=darwin ARCH=armv7 CROSS_COMPILE=$(ARM_MACHINE) \
 	HAVE_NEON=1
 
-EXTRA_ARMV7S := \
+EXTRA_ARMV7S       := \
 	EXTRA_CFLAGS='-arch armv7s \
 		-I$(CONTRIB_ARMV7S)/include \
 		-I$(CONTRIB_ARMV7S)/include/rem \
@@ -310,8 +310,8 @@ baresip: librem libre
 
 
 info:
-	@echo "SDK_VER: $(SDK_VER)"
-	@echo "SDK_ARM: $(SDK_ARM)"
-	@echo "SDK_SIM: $(SDK_SIM)"
-	@echo "CC_ARM: $(CC_ARM)"
-	@echo "CC_SIM: $(CC_SIM)"
+	@echo "SDK_VER:    $(SDK_VER)"
+	@echo "SDK_ARM:    $(SDK_ARM)"
+	@echo "SDK_SIM:    $(SDK_SIM)"
+	@echo "CC_ARM:     $(CC_ARM)"
+	@echo "CC_SIM:     $(CC_SIM)"
