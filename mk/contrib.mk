@@ -146,7 +146,7 @@ $(CONTRIB_FAT) $(CONTRIB_FAT)/lib:
 #
 
 LIBRE_BUILD_FLAGS := \
-	USE_OPENSSL= USE_ZLIB= OPT_SPEED=1 USE_APPLE_COMMONCRYPTO=1
+	USE_OPENSSL= OPENSSL_OPT= USE_ZLIB= OPT_SPEED=1 USE_APPLE_COMMONCRYPTO=1
 
 libre: $(CONTRIB_FAT)/lib
 	@rm -f $(LIBRE_PATH)/libre.*
@@ -181,8 +181,6 @@ libre: $(CONTRIB_FAT)/lib
 		PREFIX= DESTDIR=$(CONTRIB_X86_64) \
 		all install
 
-	@rm -f $(LIBRE_PATH)/libre.*
-
 	@lipo \
 		-arch x86_64 $(CONTRIB_X86_64)/lib/libre.a \
 		-arch arm64 $(CONTRIB_AARCH64)/lib/libre.a \
@@ -196,7 +194,7 @@ libre: $(CONTRIB_FAT)/lib
 #
 
 LIBREM_BUILD_FLAGS := \
-	OPT_SPEED=1
+	OPENSSL_OPT= OPT_SPEED=1 
 
 librem: libre
 	@rm -f $(LIBREM_PATH)/librem.*
@@ -230,8 +228,6 @@ librem: libre
 		$(LIBREM_BUILD_FLAGS) $(EXTRA_X86_64) \
 		PREFIX= DESTDIR=$(CONTRIB_X86_64) \
 		all install
-
-	@rm -f $(LIBREM_PATH)/librem.*
 
 	@lipo \
 		-arch x86_64 $(CONTRIB_X86_64)/lib/librem.a \
