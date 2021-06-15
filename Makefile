@@ -23,6 +23,5 @@ clean:
 download:
 	rm -fr baresip re rem
 	git clone https://github.com/baresip/baresip.git
-	git clone https://github.com/creytiv/rem.git
+	git clone https://github.com/baresip/rem.git
 	git clone https://github.com/baresip/re.git
-	patch -d rem -p1 < rem-patch-makefile
