@@ -12,6 +12,7 @@ To build static libraries for iOS run the following command:
 ```shell
 $ make download
 $ make contrib
+$ make xcframework
 ```
 
 ## Install

@@ -14,6 +14,9 @@ include mk/contrib.mk
 all:	contrib
 
 
+xcframework:
+	@./build-xcframework.sh
+
 clean:
 	@rm -rf $(BUILD_DIR) $(CONTRIB_DIR) \
 	@rm -rf baresip rem re
