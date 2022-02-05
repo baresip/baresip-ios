@@ -6,6 +6,10 @@ LIBBARESIP="libbaresip.a"
 LIBRE="libre.a"
 LIBREM="librem.a"
 
+LIBBARESIP_HEADERS="baresip/include"
+LIBRE_HEADERS="re/include"
+LIBREM_HEADERS="rem/include"
+
 IPHONEOS="contrib/iphonesimulator"
 IPHONESIMULATOR="contrib/iphoneos"
 XCFRAMEWORK="contrib/xcframework"
@@ -36,18 +40,18 @@ IOS_ARM_SIM_LIBRE="contrib/slim/lib/libre.a"
 IOS_ARM_SIM_LIBREM="contrib/slim/lib/librem.a"
 
 xcodebuild -create-xcframework \
--library ./$IPHONEOS/$LIBBARESIP \
--library ./$IPHONESIMULATOR/$LIBBARESIP \
+-library ./$IPHONEOS/$LIBBARESIP -headers ./$LIBBARESIP_HEADERS \
+-library ./$IPHONESIMULATOR/$LIBBARESIP -headers ./$LIBBARESIP_HEADERS \
 -output "$XCFRAMEWORK/$LIBBARESIP.xcframework"
 
 xcodebuild -create-xcframework \
--library ./$IPHONEOS/$LIBRE \
--library ./$IPHONESIMULATOR/$LIBRE \
+-library ./$IPHONEOS/$LIBRE -headers ./$LIBRE_HEADERS \
+-library ./$IPHONESIMULATOR/$LIBRE -headers ./$LIBRE_HEADERS \
 -output "$XCFRAMEWORK/$LIBRE.xcframework"
 
 xcodebuild -create-xcframework \
--library ./$IPHONEOS/$LIBREM \
--library ./$IPHONESIMULATOR/$LIBREM \
+-library ./$IPHONEOS/$LIBREM -headers ./$LIBREM_HEADERS \
+-library ./$IPHONESIMULATOR/$LIBREM -headers ./$LIBREM_HEADERS \
 -output "$XCFRAMEWORK/$LIBREM.xcframework"
 
 lipo $XCFRAMEWORK/$LIBBARESIP.xcframework/ios-x86_64-simulator/libbaresip.a $IOS_ARM_SIM_LIBBARESIP -create -output $XCFRAMEWORK/$LIBBARESIP.xcframework/ios-x86_64-simulator/libbaresip.a
