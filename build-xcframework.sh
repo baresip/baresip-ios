@@ -29,6 +29,8 @@ xcrun lipo -remove arm64 -remove armv7 -remove armv7s $FAT_PATH/$LIBRE -o ./$IPH
 xcrun lipo -remove arm64 -remove armv7 -remove armv7s $FAT_PATH/$LIBREM -o ./$IPHONESIMULATOR/$LIBREM
 
 # m1 arm simulator
+# https://developer.apple.com/forums/thread/66633
+
 IOS_ARM_SIM_LIBBARESIP="contrib/slim/lib/libbaresip.a"
 IOS_ARM_SIM_LIBRE="contrib/slim/lib/libre.a"
 IOS_ARM_SIM_LIBREM="contrib/slim/lib/librem.a"
