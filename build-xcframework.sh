@@ -28,6 +28,26 @@ xcrun lipo -remove arm64 -remove armv7 -remove armv7s $FAT_PATH/$LIBBARESIP -o .
 xcrun lipo -remove arm64 -remove armv7 -remove armv7s $FAT_PATH/$LIBRE -o ./$IPHONESIMULATOR/$LIBRE
 xcrun lipo -remove arm64 -remove armv7 -remove armv7s $FAT_PATH/$LIBREM -o ./$IPHONESIMULATOR/$LIBREM
 
-xcodebuild -create-xcframework -library ./$IPHONEOS/$LIBBARESIP -library ./$IPHONESIMULATOR/$LIBBARESIP -output "$XCFRAMEWORK/$LIBBARESIP.xcframework"
-xcodebuild -create-xcframework -library ./$IPHONEOS/$LIBRE -library ./$IPHONESIMULATOR/$LIBRE -output "$XCFRAMEWORK/$LIBRE.xcframework"
-xcodebuild -create-xcframework -library ./$IPHONEOS/$LIBREM -library ./$IPHONESIMULATOR/$LIBREM -output "$XCFRAMEWORK/$LIBREM.xcframework"
+# m1 arm simulator
+IOS_ARM_SIM_LIBBARESIP="contrib/slim/lib/libbaresip.a"
+IOS_ARM_SIM_LIBRE="contrib/slim/lib/libre.a"
+IOS_ARM_SIM_LIBREM="contrib/slim/lib/librem.a"
+
+xcodebuild -create-xcframework \
+-library ./$IPHONEOS/$LIBBARESIP \
+-library ./$IPHONESIMULATOR/$LIBBARESIP \
+-output "$XCFRAMEWORK/$LIBBARESIP.xcframework"
+
+xcodebuild -create-xcframework \
+-library ./$IPHONEOS/$LIBRE \
+-library ./$IPHONESIMULATOR/$LIBRE \
+-output "$XCFRAMEWORK/$LIBRE.xcframework"
+
+xcodebuild -create-xcframework \
+-library ./$IPHONEOS/$LIBREM \
+-library ./$IPHONESIMULATOR/$LIBREM \
+-output "$XCFRAMEWORK/$LIBREM.xcframework"
+
+lipo $XCFRAMEWORK/$LIBBARESIP.xcframework/ios-x86_64-simulator/libbaresip.a $IOS_ARM_SIM_LIBBARESIP -create -output $XCFRAMEWORK/$LIBBARESIP.xcframework/ios-x86_64-simulator/libbaresip.a
+lipo $XCFRAMEWORK/$LIBRE.xcframework/ios-x86_64-simulator/libre.a $IOS_ARM_SIM_LIBRE -create -output $XCFRAMEWORK/$LIBRE.xcframework/ios-x86_64-simulator/libre.a
+lipo $XCFRAMEWORK/$LIBREM.xcframework/ios-x86_64-simulator/librem.a $IOS_ARM_SIM_LIBREM -create -output $XCFRAMEWORK/$LIBREM.xcframework/ios-x86_64-simulator/librem.a

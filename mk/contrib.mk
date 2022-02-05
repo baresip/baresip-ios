@@ -41,13 +41,16 @@ CC_SIM_FLAGS := -fembed-bitcode
 
 CONTRIB_DIR	:= $(PWD)/contrib
 CONTRIB_AARCH64	:= $(CONTRIB_DIR)/aarch64
+CONTRIB_AARCH64_SIM	:= $(CONTRIB_DIR)/aarch64_sim
 CONTRIB_ARMV7	:= $(CONTRIB_DIR)/armv7
 CONTRIB_ARMV7S	:= $(CONTRIB_DIR)/armv7s
 CONTRIB_X86_64	:= $(CONTRIB_DIR)/x86_64
 CONTRIB_FAT	:= $(CONTRIB_DIR)/fat
+CONTRIB_SLIM	:= $(CONTRIB_DIR)/slim
 
 BUILD_DIR	:= $(PWD)/build
 BUILD_AARCH64	:= $(BUILD_DIR)/aarch64
+BUILD_AARCH64_SIM	:= $(BUILD_DIR)/aarch64_sim
 BUILD_ARMV7	:= $(BUILD_DIR)/armv7
 BUILD_ARMV7S	:= $(BUILD_DIR)/armv7s
 BUILD_X86_64	:= $(BUILD_DIR)/x86_64
@@ -57,6 +60,8 @@ ARMROOT		:= $(SDK_ARM)/usr
 ARMROOT_ALT	:= $(CONTRIB_FAT)
 SIMROOT		:= $(SDK_SIM)/usr
 SIMROOT_ALT	:= $(CONTRIB_FAT)
+ARMSIMROOT		:= $(SDK_SIM)/usr
+ARMSIMROOT_ALT	:= $(CONTRIB_SLIM)
 
 EXTRA_CFLAGS       := -DIPHONE -pipe -no-cpp-precomp -isysroot $(SDK_ARM)
 EXTRA_CFLAGS_SIM   := -DIPHONE -pipe -no-cpp-precomp -isysroot $(SDK_SIM)
@@ -84,6 +89,19 @@ EXTRA_X86_64      := \
 		-I$(CONTRIB_X86_64)/include/rem' \
 	OBJCFLAGS='-fobjc-abi-version=2 -fobjc-legacy-dispatch' \
 	EXTRA_LFLAGS='-mios-simulator-version-min=$(DEPLOYMENT_TARGET_VERSION) -arch x86_64 -L$(CONTRIB_FAT)/lib \
+		-isysroot $(SDK_SIM)'
+
+EXTRA_AARCH64_SIM      := \
+	EXTRA_CFLAGS='-D__DARWIN_ONLY_UNIX_CONFORMANCE \
+		-mios-simulator-version-min=$(DEPLOYMENT_TARGET_VERSION) \
+		-Wno-cast-align -Wno-shorten-64-to-32 \
+		-Wno-aggregate-return \
+		-arch arm64 \
+		-isysroot $(SDK_SIM) \
+		-I$(CONTRIB_AARCH64_SIM)/include \
+		-I$(CONTRIB_AARCH64_SIM)/include/rem' \
+	OBJCFLAGS='-fobjc-abi-version=2 -fobjc-legacy-dispatch' \
+	EXTRA_LFLAGS='-mios-simulator-version-min=$(DEPLOYMENT_TARGET_VERSION) -arch arm64 -L$(CONTRIB_SLIM)/lib \
 		-isysroot $(SDK_SIM)'
 
 EXTRA_AARCH64       := \
@@ -134,12 +152,14 @@ EXTRA_ARMV7S       := \
 contrib:	baresip
 
 
-$(BUILD_AARCH64) $(BUILD_ARMV7) $(BUILD_ARMV7S) $(BUILD_X86_64) $(BUILD_FAT):
+$(BUILD_AARCH64) $(BUILD_AARCH64_SIM) $(BUILD_ARMV7) $(BUILD_ARMV7S) $(BUILD_X86_64) $(BUILD_FAT):
 	@mkdir -p $@
 
 $(CONTRIB_FAT) $(CONTRIB_FAT)/lib:
 	@mkdir -p $@
 
+$(CONTRIB_SLIM) $(CONTRIB_SLIM)/lib:
+	mkdir -p $@
 
 #
 # libre
@@ -148,13 +168,21 @@ $(CONTRIB_FAT) $(CONTRIB_FAT)/lib:
 LIBRE_BUILD_FLAGS := \
 	USE_OPENSSL= OPENSSL_OPT= USE_ZLIB= OPT_SPEED=1 USE_APPLE_COMMONCRYPTO=1
 
-libre: $(CONTRIB_FAT)/lib
+libre: $(CONTRIB_FAT)/lib $(CONTRIB_SLIM)/lib
 	@rm -f $(LIBRE_PATH)/libre.*
 	@make -sC $(LIBRE_PATH) CC='$(CC_ARM) $(CC_ARM_FLAGS)' \
 		BUILD=$(BUILD_AARCH64)/libre \
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
 		$(LIBRE_BUILD_FLAGS) $(EXTRA_AARCH64) \
 		PREFIX= DESTDIR=$(CONTRIB_AARCH64) \
+		all install
+
+	@rm -f $(LIBRE_PATH)/libre.*
+	@make -sC $(LIBRE_PATH) CC='$(CC_SIM) $(CC_SIM_FLAGS)' \
+		BUILD=$(BUILD_AARCH64_SIM)/libre \
+		SYSROOT=$(SIMROOT) SYSROOT_ALT=$(SIMROOT_ALT) \
+		$(LIBRE_BUILD_FLAGS) $(EXTRA_AARCH64_SIM) \
+		PREFIX= DESTDIR=$(CONTRIB_AARCH64_SIM) \
 		all install
 
 	@rm -f $(LIBRE_PATH)/libre.*
@@ -188,6 +216,10 @@ libre: $(CONTRIB_FAT)/lib
 		-arch armv7s $(CONTRIB_ARMV7S)/lib/libre.a \
 		-create -output $(CONTRIB_FAT)/lib/libre.a
 
+	@lipo \
+		-arch arm64 $(CONTRIB_AARCH64_SIM)/lib/libre.a \
+		-create -output $(CONTRIB_SLIM)/lib/libre.a
+
 
 #
 # librem
@@ -203,6 +235,14 @@ librem: libre
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
 		$(LIBREM_BUILD_FLAGS) $(EXTRA_AARCH64) \
 		PREFIX= DESTDIR=$(CONTRIB_AARCH64) \
+		all install
+
+	@rm -f $(LIBREM_PATH)/librem.*
+	@make -sC $(LIBREM_PATH) CC='$(CC_SIM) $(CC_SIM_FLAGS)' \
+		BUILD=$(BUILD_AARCH64_SIM)/librem \
+		SYSROOT=$(SIMROOT) SYSROOT_ALT=$(ARMSIMROOT_ALT) \
+		$(LIBREM_BUILD_FLAGS) $(EXTRA_AARCH64_SIM) \
+		PREFIX= DESTDIR=$(CONTRIB_AARCH64_SIM) \
 		all install
 
 	@rm -f $(LIBREM_PATH)/librem.*
@@ -235,6 +275,10 @@ librem: libre
 		-arch armv7 $(CONTRIB_ARMV7)/lib/librem.a \
 		-arch armv7s $(CONTRIB_ARMV7S)/lib/librem.a \
 		-create -output $(CONTRIB_FAT)/lib/librem.a
+
+	@lipo \
+		-arch arm64 $(CONTRIB_AARCH64_SIM)/lib/librem.a \
+		-create -output $(CONTRIB_SLIM)/lib/librem.a
 
 
 #
@@ -274,6 +318,14 @@ baresip: librem libre
 		install-static
 
 	@rm -f $(BARESIP_PATH)/src/static.c ../baresip/libbaresip.*
+	@make -sC $(BARESIP_PATH) CC='$(CC_SIM) $(CC_SIM_FLAGS)' \
+		BUILD=$(BUILD_AARCH64_SIM)/baresip \
+		SYSROOT=$(SIMROOT) SYSROOT_ALT=$(ARMSIMROOT_ALT) \
+		$(BARESIP_BUILD_FLAGS_AARCH64) $(EXTRA_AARCH64_SIM) \
+		PREFIX= DESTDIR=$(CONTRIB_AARCH64_SIM) \
+		install-static
+
+	@rm -f $(BARESIP_PATH)/src/static.c ../baresip/libbaresip.*
 	@make -sC $(BARESIP_PATH) CC='$(CC_ARM) $(CC_ARM_FLAGS)' \
 		BUILD=$(BUILD_ARMV7)/baresip \
 		SYSROOT=$(ARMROOT) SYSROOT_ALT=$(ARMROOT_ALT) \
@@ -303,6 +355,10 @@ baresip: librem libre
 		-arch armv7 $(CONTRIB_ARMV7)/lib/libbaresip.a \
 		-arch armv7s $(CONTRIB_ARMV7S)/lib/libbaresip.a \
 		-create -output $(CONTRIB_FAT)/lib/libbaresip.a
+
+	@lipo \
+		-arch arm64 $(CONTRIB_AARCH64_SIM)/lib/libbaresip.a \
+		-create -output $(CONTRIB_SLIM)/lib/libbaresip.a
 
 
 info:
