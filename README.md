@@ -12,17 +12,18 @@ To build static libraries for iOS run the following command:
 ```shell
 $ make download
 $ make contrib
+$ make xcframework
 ```
 
 ## Install
 - Link XCode target with:
-    - `contrib/fat/lib/libbaresip.a`, `contrib/fat/lib/libre.a`, `contrib/fat/lib/librem.a`  
+    - `contrib/xcframework/libbaresip.a.xcframework`, `contrib/xcframework/libre.a.xcframework`, `contrib/xcframework/librem.a.xcframework`  
     - `libresolv.9.dlyb`
     - `AVFoundation`, `SystemConfiguration`, `CFNetwork`, `CoreMedia`, `AudioToolbox`, `CoreVideo` frameworks
-- Setup build settings:
-    - header search path with:
-        - `baresip/include`
-        - `re/include`
-        - `rem/include`
-    - library search path with:
-        - `contrib/fat/lib`
+
+- Add to bridging headers
+```
+#import "re.h"
+#import "rem.h"
+#import "baresip.h"
+```
